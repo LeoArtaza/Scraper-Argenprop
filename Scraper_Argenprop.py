@@ -24,7 +24,7 @@ def main():
 
         if done:
             if len(data) == 0:
-                print("No se encontraron publicaciones nuevas.")
+                para_imprimir_al_final = 'No se encontraron publicaciones nuevas.'
                 return
             else:
                 para_imprimir_al_final = f'Se encontraron {len(data)} publicaciones nuevas.'
@@ -34,8 +34,6 @@ def main():
             
         # Por cada publicación encontrada, extraer los datos y appendear a la lista "data"
         for listing in listings:
-
-            
             
             id_ = listing.find('a')
 
