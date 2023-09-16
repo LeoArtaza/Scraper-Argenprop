@@ -2,7 +2,6 @@ import pandas as pd; pd.set_option('display.max_columns', 500); pd.set_option('d
 import numpy as np
 from bs4 import BeautifulSoup as bs
 import requests
-from tqdm import tqdm
 import datetime
 
 def main():
