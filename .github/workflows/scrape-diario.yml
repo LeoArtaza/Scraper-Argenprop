@@ -2,11 +2,14 @@ name: Scrapear y Actualizar Datos
 
 on:
   schedule:
-    - cron: '0 * * * *' # Ejecutar todos los días a las 21:00 Argentina (UTC-3)
+    - cron: '0 23 * * *' # Ejecutar todos los días a las 20:00 Argentina (UTC-3)
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+
+    env:
+      CSV_FILE_NAME: datos_scrape_argenprop.csv # Nombre del archivo CSV
 
     steps:
     - name: Checkout del Código
@@ -20,17 +23,28 @@ jobs:
     - name: Instalar Dependencias
       run: pip install numpy pandas requests datetime beautifulsoup4 html5lib
 
+    - name: Ejecutar Scraper
+      run: python ejecutar_scrape_argenprop.py
+
+    - name: Verificar si el archivo fue modificado
+      id: checkear-diff-csv
+      run: |
+        if git diff --quiet ${{ env.CSV_FILE_NAME }}; then
+          echo "::set-output name=csv_fue_modificado::false"
+        else
+          echo "::set-output name=csv_fue_modificado::true"
+        fi
+
     - name: Obtener la fecha actual
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-    - name: Ejecutar Scraper
-      run: python ejecutar_scrape_argenprop.py
-
     - name: Actualizar CSV en el Repositorio
+      if: steps.checkear-diff-csv.outputs.csv_fue_modificado == 'true'
       run: |
         git config --local user.email "57342159+LeoArtaza@users.noreply.github.com"
         git config --local user.name "LeoArtaza"
-        git add datos_scrape_argenprop.csv
+        git add ${{ env.CSV_FILE_NAME }}
         git commit -m "Actualizar datos a fecha ${{ steps.date.outputs.date }}"
         git push
+
