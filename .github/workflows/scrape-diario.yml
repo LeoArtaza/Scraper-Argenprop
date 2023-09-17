@@ -1,0 +1,36 @@
+name: Scrapear y Actualizar Datos
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Ejecutar todos los días a las 21:00 Argentina (UTC-3)
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del Código
+      uses: actions/checkout@v2
+
+    - name: Configurar Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Instalar Dependencias
+      run: pip install numpy pandas requests datetime beautifulsoup4 html5lib
+
+    - name: Obtener la fecha actual
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Ejecutar Scraper
+      run: python ejecutar_scrape_argenprop.py
+
+    - name: Actualizar CSV en el Repositorio
+      run: |
+        git config --local user.email "57342159+LeoArtaza@users.noreply.github.com"
+        git config --local user.name "LeoArtaza"
+        git add datos_scrape_argenprop.csv
+        git commit -m "Actualizar datos a fecha ${{ steps.date.outputs.date }}"
+        git push
