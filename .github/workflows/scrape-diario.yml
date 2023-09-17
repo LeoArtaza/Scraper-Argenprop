@@ -2,7 +2,7 @@ name: Scrapear y Actualizar Datos
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Ejecutar todos los días a las 21:00 Argentina (UTC-3)
+    - cron: '0 * * * *' # Ejecutar todos los días a las 21:00 Argentina (UTC-3)
 
 jobs:
   scrape:
