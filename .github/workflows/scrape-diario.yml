@@ -25,7 +25,7 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
     - name: Ejecutar Scraper
-      run: python ejecutar_scraper_argenprop.py
+      run: python ejecutar_scrape_argenprop.py
 
     - name: Actualizar CSV en el Repositorio
       run: |
