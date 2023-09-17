@@ -8,6 +8,9 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
 
+    env:
+      NOMBRE_ARCHIVO_CSV: datos_scrape_argenprop.csv # Nombre del archivo CSV
+
     steps:
     - name: Checkout del Código
       uses: actions/checkout@v2
@@ -26,7 +29,7 @@ jobs:
     - name: Verificar si el archivo CSV ha cambiado
       id: chequear-diff-csv
       run: |
-        if git diff --quiet datos_scrape_argenprop.csv; then
+        if git diff --quiet ${{ env.NOMBRE_ARCHIVO_CSV }}; then
           echo "::set-output name=csv_fue_modificado::false"
         else
           echo "::set-output name=csv_fue_modificado::true"
@@ -41,6 +44,6 @@ jobs:
       run: |
         git config --local user.email "57342159+LeoArtaza@users.noreply.github.com"
         git config --local user.name "LeoArtaza"
-        git add datos_scrape_argenprop.csv
+        git add ${{ env.NOMBRE_ARCHIVO_CSV }}
         git commit -m "Actualizar datos a fecha ${{ steps.date.outputs.date }}"
         git push
