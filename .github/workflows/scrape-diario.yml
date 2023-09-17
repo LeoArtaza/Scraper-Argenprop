@@ -18,7 +18,7 @@ jobs:
     - name: Configurar Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: 3.11
 
     - name: Instalar Dependencias
       run: pip install numpy pandas requests datetime beautifulsoup4 html5lib
