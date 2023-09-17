@@ -119,4 +119,3 @@ def main():
 if __name__ == '__main__':
     main()
     
-input('El script terminó exitosamente. Presione Enter para finalizar...')
