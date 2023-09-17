@@ -20,14 +20,24 @@ jobs:
     - name: Instalar Dependencias
       run: pip install numpy pandas requests datetime beautifulsoup4 html5lib
 
+    - name: Ejecutar Scraper
+      run: python ejecutar_scrape_argenprop.py
+
+    - name: Verificar si el archivo CSV ha cambiado
+      id: chequear-diff-csv
+      run: |
+        if git diff --quiet datos_scrape_argenprop.csv; then
+          echo "::set-output name=csv_fue_modificado::false"
+        else
+          echo "::set-output name=csv_fue_modificado::true"
+        fi
+
     - name: Obtener la fecha actual
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-    - name: Ejecutar Scraper
-      run: python ejecutar_scrape_argenprop.py
-
     - name: Actualizar CSV en el Repositorio
+      if: steps.chequear-diff-csv.outputs.csv_fue_modificado == 'true'
       run: |
         git config --local user.email "57342159+LeoArtaza@users.noreply.github.com"
         git config --local user.name "LeoArtaza"
