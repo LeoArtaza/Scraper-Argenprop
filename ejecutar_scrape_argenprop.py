@@ -4,9 +4,11 @@ from bs4 import BeautifulSoup as bs
 import requests
 import datetime
 
+nombre_archivo_datos = 'datos_scrape_argenprop.csv'
+
 def main():
     # Leo el csv actual como df para tener los id viejos y no scrapearlos 2 veces
-    df_old = pd.read_csv('Argenprop_scrape.csv', dtype={'id': str}, parse_dates=['fecha_scrape'])
+    df_old = pd.read_csv(nombre_archivo_datos, dtype={'id': str}, parse_dates=['fecha_scrape'])
 
     # Scrape de nuevas publicaciones
     # Tope de páginas a scrapear
@@ -110,7 +112,7 @@ def main():
     print(para_imprimir_al_final)
 
     # Appendear 
-    df.to_csv(f'Argenprop_scrape.csv', mode='a', index=False, header=False)
+    df.to_csv(nombre_archivo_datos, mode='a', index=False, header=False)
 
     return
     
